@@ -27,7 +27,6 @@
 ---
 <a name="1"></a> 
 # 1. MongoDB Server
-
 Install MongoDB and Python wrapper:
 
 ```
