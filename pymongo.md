@@ -4,7 +4,7 @@
 
 [Datasets](https://raw.githubusercontent.com/steveren/docs-assets/charts-tutorial/movieDetails.json)
 
-1. [MongoDB Server][def #1]
+1. [MongoDB Server][#1]
 2. [Making a Connection][def #2]
 3. [Listing Databases][def #3]
 4. [Listing Collections][def #4]
