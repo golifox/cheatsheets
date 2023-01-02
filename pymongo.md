@@ -4,30 +4,30 @@
 
 [Datasets](https://raw.githubusercontent.com/steveren/docs-assets/charts-tutorial/movieDetails.json)
 
-1. [MongoDB Server][def #1]
-2. [Making a Connection][def #2]
-3. [Listing Databases][def #3]
-4. [Listing Collections][def #4]
-5. [Write One Document][def #5]
-6. [Write Many Documents][def #6]
-7. [Find One Document][def #7]
-8. [Find Many Documents][def #8]
-9. [Range Queries][def #9]
-10. [Updates][def #10]
-11. [Filters][def #11]
-12. [Projections][def #12]
-13. [Sorting Documents][def #13]
-14. [Aggregations][def #14]
-15. [Limit Data Output][def #15]
-16. [Indexes][def #16]
-17. [Delete Documents][def #17]
-18. [Drop Collections][def #18]
-19. [MongoEngine - ORM][def #19]
+1. [MongoDB Server](#1)
+2. [Making a Connection](#2)
+3. [Listing Databases](#3)
+4. [Listing Collections](#4)
+5. [Write One Document](#5)
+6. [Write Many Documents](#6)
+7. [Find One Document](#7)
+8. [Find Many Documents](#8)
+9. [Range Queries](#9)
+10. [Updates](#10)
+11. [Filters](#11)
+12. [Projections](#12)
+13. [Sorting Documents](#13)
+14. [Aggregations](#14)
+15. [Limit Data Output](#15)
+16. [Indexes](#16)
+17. [Delete Documents](#17)
+18. [Drop Collections](#18)
+19. [MongoEngine - ORM](#19)
 
 ---
-
+<a name="1"></a> 
 # 1. MongoDB Server
-[def #1]: #1
+
 Install MongoDB and Python wrapper:
 
 ```
@@ -49,9 +49,9 @@ Run a mongodb server as a container with docker:
 ``` docker  
 $ docker run --rm -itd --name mongodb -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password -p 27017:27017 mongo:4.4
 ```
-
+<a name="2"></a> 
 # 2. Making a Connection
-[def #2]: #2
+
 Making a connection without authentication:
 
 ```py
@@ -75,17 +75,16 @@ Making a connection with authentication:
 
 ['admin', 'config', 'local']
 ```
-
+<a name="3"></a> 
 # 3. Listing Databases
-[def #3]: #3
+
 ```py
 >>> client.database_names()
 
 ['admin', 'config', 'local']
 ```
-
+<a name="4"></a> 
 # 4. Listing Collections
-[def #4]: #4
 
 ```py
 >>> db = client.config
@@ -93,9 +92,8 @@ Making a connection with authentication:
 
 ['system.sessions']
 ```
-
+<a name="5"></a> 
 # 5. Write One Document
-[def #5]: #5
 
 ```py
 >>> db = client.store_db
@@ -120,9 +118,9 @@ We can verify that the collection is present:
 >>> db.list_collection_names()
 ['transactions']
 ```
-
+<a name="6"></a> 
 # 6. Write Many Documents
-[def #6]: #6
+
 We can batch up our writes:
 
 ```py 
@@ -147,18 +145,17 @@ We can batch up our writes:
 >>> response.inserted_ids
 [ObjectId('5cad18d4a5f3826f6f046d75'), ObjectId('5cad18d4a5f3826f6f046d76'), ObjectId('5cad18d4a5f3826f6f046d77')]
 ```
-
+<a name="7"></a> 
 # 7. Find One Document
-[def #7]: #7
+
 The command below returns record by fisrt match in base:
 
 ```py
 >>> transactions.find_one({'account_id': 'gm_49121229'})
 {u'account_id': u'gm_49121229', u'store_name': u'game', u'purchase_method': u'cash', u'branch_name': u'bellvile', u'products_purchased': [u'ps4 remote'], u'_id': ObjectId('5cad18d4a5f3826f6f046d77'), u'total_costs': 499.99}
 ```
-
+<a name="8"></a> 
 # 8. Find Many Documents + Filters
-[def #8]: #8
 
 ```py
 >>> response = transactions.find({'purchase_method': 'cash'})
@@ -213,9 +210,8 @@ gt  - Greater Than
 gte - Greater Than Equals
 ne  - Not Equals
 ```
-
+<a name="9"></a> 
 # 9. Range Queries
-[def #9]: #9
 
 ```py
 >>> import datetime
@@ -235,9 +231,8 @@ ne  - Not Equals
 ...
 {u'date': datetime.datetime(2009, 11, 10, 10, 45), u'text': u'and pretty easy too!', u'_id': ObjectId('5cb439c0f90e2e002a164d16'), u'author': u'Eliot', u'title': u'MongoDB is fun'}
 ```
-
+<a name="10"></a> 
 # 10. Updates
-[def #10]: #10
 Let's say we want to change a transactions payment method from credit card to account:
 
 ```py
@@ -260,8 +255,9 @@ This examples is only intended for a single document and mongodb only updates on
 ```py
 transactions.update( {'k': 'v'}, {'$set': {'k': 'new_v'}},{multi:true})
 ```
+<a name="11"></a> 
 # 11. Filters
-[def #11]: #11
+
 Find all the documents with purchase price > 120:
 
 ```py
@@ -269,8 +265,9 @@ Find all the documents with purchase price > 120:
 >>> [doc for doc in response]
 [{u'account_id': u'sns_09121024', u'store_name': u'sportsmans', u'purchase_method': u'credit card', u'branch_name': u'tygervalley', u'products_purchased': [u'sportsdrink', u'sunglasses', u'sports illustrated'], u'_id': ObjectId('5cad18d4a5f3826f6f046d75'), u'total_costs': 129.84}, {u'account_id': u'gm_49121229', u'store_name': u'game', u'purchase_method': u'cash', u'branch_name': u'bellvile', u'products_purchased': [u'ps4 remote'], u'_id': ObjectId('5cad18d4a5f3826f6f046d77'), u'total_costs': 499.99}]
 ```
+<a name="12"></a> 
 # 12. Projections
-[def #12]: #12
+
 Select specific fields from the returned response:
 
 ```py
@@ -278,8 +275,9 @@ Select specific fields from the returned response:
 >>> [doc for doc in response]
 [{u'purchase_method': u'credit card', u'branch_name': u'tygervalley', u'_id': ObjectId('5cad16a5a5f3826f6f046d74')}, {u'purchase_method': u'credit card', u'branch_name': u'tygervalley', u'_id': ObjectId('5cad18d4a5f3826f6f046d75')}, {u'purchase_method': u'cash', u'branch_name': u'somerset west', u'_id': ObjectId('5cad18d4a5f3826f6f046d76')}, {u'purchase_method': u'cash', u'branch_name': u'bellvile', u'_id': ObjectId('5cad18d4a5f3826f6f046d77')}]
 ```
+<a name="13"></a> 
 # 13. Sorting Documents
-[def #13]: #13
+
 Sorting Documents in Descending Order:
 
 ```py
@@ -288,8 +286,8 @@ Sorting Documents in Descending Order:
 >>> ['Products: {}, Price: {}'.format(doc['products_purchased'], doc['total_costs']) for doc in response]
 ["Products: [u'ps4 remote'], Price: 499.99", "Products: [u'sportsdrink', u'sunglasses', u'sports illustrated'], Price: 129.84", "Products: [u'cricket bat', u'cricket ball', u'sports hat'], Price: 109.2", "Products: [u'cheese burger', u'pepsi'], Price: 89.99"]
 ```
+<a name="14"></a> 
 # 14. Aggregations
-[def #14]: #14
 
 ```py
 >>> agr = [{'$group': {'_id': 1, 'all': { '$sum': '$total_costs' }}}]
@@ -309,8 +307,8 @@ Select fields to aggregate, eg. aggregate the costs for selected stores:
 >>> [a for a in transactions.aggregate(agr)]
 [{u'_id': 1, u'sum2stores': 739.03}]
 ```
+<a name="15"></a> 
 # 15. Limit Data Output
-[def #15]: #15
 
 ```py
 >>> response = transactions.find()
@@ -333,8 +331,8 @@ Select fields to aggregate, eg. aggregate the costs for selected stores:
 >>> [a['account_id'] for a in response]
 [u'gm_49121229']
 ```
+<a name="16"></a> 
 # 16. Indexes
-[def #16]: #16
 
 Create index:
 ```py
@@ -342,8 +340,8 @@ Create index:
 >>> transactions.create_index([("store_name", TEXT)], name='store_index', default_language='english')
 'store_index'
 ```
+<a name="17"></a> 
 # 17. Delete Documents:
-[def #17]: #17
 
 Delete selected documents:
 ```py
@@ -354,16 +352,16 @@ Delete all documents:
 ```py
 >>> transactions.remove()
 ```
+<a name="18"></a> 
 # 18. Drop Collections
-[def #18]: #18
 
 ```py
 >>> transactions.drop()
 >>> db.collection_names()
 []
 ```
+<a name="19"></a> 
 # 19. MongoEngine - ORM
-[def #19]: #19
 
 ```py
 >>> from mongoengine import *
